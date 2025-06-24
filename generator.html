@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diary Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold mb-4">📄 Diary Entry Generator</h1>
+
+  <form id="form" class="space-y-4">
+    <input type="number" id="entryNumber" placeholder="Nomor entry (misal: 3)" class="w-full px-4 py-2 rounded border" required />
+    <input type="text" id="entryDate" placeholder="Tanggal (misal: 26 Juni 2025)" class="w-full px-4 py-2 rounded border" required />
+    <input type="text" id="entryTitle" placeholder="Judul / Ringkasan (misal: Entry #3)" class="w-full px-4 py-2 rounded border" required />
+    <textarea id="entryContent" placeholder="Isi cerita..." class="w-full h-40 px-4 py-2 rounded border" required></textarea>
+    <input type="text" id="entryQuote" placeholder="Kutipan opsional" class="w-full px-4 py-2 rounded border" />
+    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Generate HTML</button>
+  </form>
+
+  <h2 class="text-xl font-bold mt-8 mb-2">📋 Hasil HTML</h2>
+  <textarea id="result" class="w-full h-96 p-4 bg-gray-900 text-green-400 font-mono rounded"></textarea>
+
+  <script>
+    const form = document.getElementById('form');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const number = document.getElementById('entryNumber').value;
+      const date = document.getElementById('entryDate').value;
+      const title = document.getElementById('entryTitle').value;
+      const content = document.getElementById('entryContent').value.replaceAll('\\n', '<br>');
+      const quote = document.getElementById('entryQuote').value;
+
+      const html = `<!DOCTYPE html>
+<html lang=\"id\" class=\"dark\">
+<head>
+  <meta charset=\"UTF-8\" />
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
+  <title>${title} - Diary Hidupku</title>
+  <script src=\"https://cdn.tailwindcss.com\"></script>
+  <script>
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</head>
+<body class=\"bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans\">
+  <nav class=\"sticky top-0 z-50 backdrop-blur bg-white/70 dark:bg-gray-900/70 shadow p-4 flex justify-between items-center\">
+    <h1 class=\"text-xl font-bold\">📔 Hidupku</h1>
+    <div class=\"space-x-4\">
+      <a href=\"../index.html\" class=\"hover:underline\">Home</a>
+    </div>
+  </nav>
+
+  <main class=\"p-6 max-w-3xl mx-auto space-y-6\">
+    <article class=\"bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow\">
+      <h2 class=\"text-2xl font-bold\">${title}</h2>
+      <div class=\"text-sm text-gray-500 dark:text-gray-400 mt-1\">📅 Ditulis: ${date}</div>
+      <p class=\"mt-4 leading-relaxed\">${content}</p>
+      ${quote ? `<blockquote class=\"mt-4 italic text-indigo-600 dark:text-indigo-400 border-l-4 pl-4 border-indigo-400 dark:border-indigo-600\">${quote}</blockquote>` : ''}
+    </article>
+  </main>
+
+  <footer class=\"text-center p-4 text-sm text-gray-500 dark:text-gray-400\">
+    © 2025 by Kamu. Dibuat dengan ❤️ dan Tailwind CSS.
+  </footer>
+</body>
+</html>`;
+
+      result.value = html;
+    });
+  </script>
+</body>
+</html>
